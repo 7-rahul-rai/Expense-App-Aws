@@ -34,3 +34,25 @@ exports.usersnp = async (req, res) => {
     res.sendStatus(500);
   }
 };
+
+exports.userlgn = async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  try {
+    const data = userModel.findOne({
+      where: {
+        email: email,
+        password: password,
+      },
+    });
+    if(data){
+    res.json(data);
+    }
+    else{
+        res.status(401).json({message:"invalid credentials"})
+    }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};

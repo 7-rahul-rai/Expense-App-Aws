@@ -1,15 +1,20 @@
-document.getElementById('signup').addEventListener("submit",addeUser)
+document.getElementById("signup").addEventListener("submit", addeUser);
 
+async function addeUser(e) {
+  e.preventDefault();
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
-async function addeUser(e){
-    e.preventDefault()
-    let name = document.getElementById('name').value
-    let email = document.getElementById('email').value
-    let password = document.getElementById('password').value
+  const congfig = { name, email, password };
 
-    const congfig = {name,email,password}
-   await axios.post('/signup',congfig)
-    .then((res)=>{console.log(res.data)})
+  try {
+    const res = await axios.post("/signup", congfig);
+    console.log(res.data);
+    alert("user created");
+  } catch (err) {
+    console.log('user already exists');
+  }
 
-    document.getElementById('signup').reset()
+  document.getElementById("signup").reset();
 }

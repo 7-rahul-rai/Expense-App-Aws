@@ -13,6 +13,6 @@ catch(e){
     console.log(e);
 }
 
-sequelize.sync({force:true})
+sequelize.sync({force:false})
 
 module.exports = sequelize

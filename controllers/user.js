@@ -1,4 +1,5 @@
 const userModel = require("../models/user");
+const bcrypt = require("bcrypt");
 
 exports.usersnp = async (req, res) => {
   console.log("in exports poste");
@@ -22,12 +23,11 @@ exports.usersnp = async (req, res) => {
     if (user) {
       res.status(403).json({ error: "user exists" });
     } else {
-      const data = await userModel.create({
-        name,
-        email,
-        password,
+      bcrypt.hash(password, 10, async (err, hash) => {
+        console.log(err);
+        const data = await userModel.create({ name, email, password: hash });
+        res.status(201).json({ data: data });
       });
-      res.json(data);
     }
   } catch (err) {
     console.error(err);
@@ -41,13 +41,16 @@ exports.userlgn = async (req, res) => {
     const password = req.body.password;
     const user = await userModel.findAll({ where: { email } });
     if (user.length > 0) {
-      if (user[0].password === password) {
-        console.log("logged in");
-        res.status(200).json({ message: "Logged in successfully" });
-      } else {
+      bcrypt.compare(password,user[0].password,(err,result)=>{
+        if(!err){
+          console.log("logged in");
+          res.status(200).json({ message: "Logged in successfully" });
+        }        
+       else {
         console.log("wrong password");
         res.status(401).json({ message: "Wrong password" });
       }
+    })
     } else {
       console.log("User not found");
       res.status(404).json({ message: "User not found" });

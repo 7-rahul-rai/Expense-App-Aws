@@ -36,23 +36,27 @@ exports.usersnp = async (req, res) => {
 };
 
 exports.userlgn = async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
   try {
-    const data = userModel.findOne({
-      where: {
-        email: email,
-        password: password,
-      },
-    });
-    if(data){
-    res.json(data);
-    }
-    else{
-        res.status(401).json({message:"invalid credentials"})
+    const email = req.body.email;
+    const password = req.body.password;
+    const user = await userModel.findOne({ where: { email: email } });
+    if (user) {
+        if (password===user.password) {
+          console.log("logged in");
+          res.status(200).json({
+            message: "Logged in successfully"
+          });
+        } else {
+          console.log("wrong password");
+          res.status(401).json({ message: "Wrong password" });
+        }
+
+    } else {
+      console.log("User not found");
+      res.status(404).json({ message: "User not found" });
     }
   } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+    console.log("Something went wrong");
+    res.status(500).json({ message: "Something went wrong" });
   }
-};
+}

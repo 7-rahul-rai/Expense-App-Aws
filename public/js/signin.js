@@ -7,10 +7,8 @@ async function loginUser(e) {
 
   try {
     const res = await axios.get("/signin");
-    console.log(res.data);
     if (res.status == "200") {
-        console.log('user has login successful');
-    //   alert("Login Successful!");
+        console.log('successful user login');
     }
   } catch (err) {
     console.log("user doesn't exist signup");

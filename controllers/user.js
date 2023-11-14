@@ -42,7 +42,10 @@ exports.userlgn = async (req, res) => {
     const user = await userModel.findAll({ where: { email } });
     if (user.length > 0) {
       bcrypt.compare(password,user[0].password,(err,result)=>{
-        if(!err){
+        if(err){
+          console.log(err);
+        }
+        if(result===true){
           console.log("logged in");
           res.status(200).json({ message: "Logged in successfully" });
         }        

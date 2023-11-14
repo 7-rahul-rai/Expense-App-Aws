@@ -6,13 +6,11 @@ async function loginUser(e) {
   let password = document.getElementById("password").value;
 
   try {
-    const res = await axios.get("/signin");
-    if (res.status == "200") {
+    const obj = {email,password}
+    const res = await axios.post("/signin",obj);
         console.log('successful user login');
-    }
   } catch (err) {
     console.log("user doesn't exist signup");
   }
-
   document.getElementById("signin").reset();
 }

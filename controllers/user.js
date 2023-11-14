@@ -39,24 +39,21 @@ exports.userlgn = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const user = await userModel.findOne({ where: { email: email } });
-    if (user) {
-        if (password===user.password) {
-          console.log("logged in");
-          res.status(200).json({
-            message: "Logged in successfully"
-          });
-        } else {
-          console.log("wrong password");
-          res.status(401).json({ message: "Wrong password" });
-        }
-
+    const user = await userModel.findAll({ where: { email } });
+    if (user.length > 0) {
+      if (user[0].password === password) {
+        console.log("logged in");
+        res.status(200).json({ message: "Logged in successfully" });
+      } else {
+        console.log("wrong password");
+        res.status(401).json({ message: "Wrong password" });
+      }
     } else {
       console.log("User not found");
       res.status(404).json({ message: "User not found" });
     }
   } catch (err) {
     console.log("Something went wrong");
-    res.status(500).json({ message: "Something went wrong" });
+    res.status(500).json({ message: err });
   }
-}
+};

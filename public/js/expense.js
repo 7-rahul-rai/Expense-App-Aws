@@ -33,7 +33,8 @@ async function showExpense() {
      <td>${element.category}</td>
      <td>
        <button type="button" class="btn btn-warning btn-sm" onclick="editExpense(${element.id})">Edit</button>
-       <button type="button" class="btn btn-danger btn-sm ml-2 onclick="deleteExpense(${element.id})">Delete</button>
+       <button type="button" class="btn btn-danger btn-sm ml-2" onclick="deleteExpense(${element.id})">Delete</button>
+
      </td>
    </tr>`;
       });
@@ -46,7 +47,7 @@ async function deleteExpense(id){
   try{
     await axios.delete(`/deletex/${id}`)
     console.log('del success');
-  //  await showExpense()
+    showExpense()
   }
   catch(err){
     console.log(err);

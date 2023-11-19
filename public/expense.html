@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Expense Tracker Form</title>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Add a Expense</h2>
+  <form id="expense">
+    <div class="form-group">
+      <label for="amount">Amount:</label>
+      <input type="number" class="form-control" id="amount" placeholder="Enter the amount" required name="amount">
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea class="form-control" id="description" rows="3" placeholder="Enter a description" required name="description"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="category">Category:</label>
+      <select class="form-control" id="category" required name="category">
+        <option value="" disabled selected>Select a category</option>
+        <option value="groceries">Groceries</option>
+        <option value="utilities">Utilities</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="travel">Travel</option>
+        <option value="assets">Assets</option>
+        <option value="salary">Salary</option>
+        <!-- Add more categories as needed -->
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<div class="container mt-5">
+  <h2>Expenses</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Amount</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tablebody">
+      <!-- Example rows, replace with dynamic data from your backend -->
+  
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="js/expense.js"></script>
+
+</body>
+</html>

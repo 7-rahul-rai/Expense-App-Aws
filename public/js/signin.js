@@ -9,6 +9,7 @@ async function loginUser(e) {
     const obj = {email,password}
     const res = await axios.post("/signin",obj);
         console.log('successful user login');
+        await axios.get('/expenset')
   } catch (err) {
     console.log("user doesn't exist signup");
   }

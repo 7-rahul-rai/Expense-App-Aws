@@ -63,3 +63,7 @@ exports.userlgn = async (req, res) => {
     res.status(500).json({ message: err });
   }
 };
+
+exports.expenset = async(req,res)=>{
+    res.sendFile('expense.html')
+}

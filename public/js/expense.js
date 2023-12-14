@@ -1,5 +1,5 @@
 document.getElementById("expense").addEventListener("submit", addExpense);
-
+const token = localStorage.getItem('token');
 
 async function addExpense(e) {
   e.preventDefault();
@@ -8,8 +8,9 @@ async function addExpense(e) {
   let category = document.getElementById("category").value;
 
   try {
+    // const decodeToken = parseJwt(token)
     const obj = { amount, description, category };
-    const res = await axios.post("/addexpense", obj);
+    const res = await axios.post("/addexpense", obj,{ headers: { "Authorization":token} });
     console.log("Expense added");
     console.log(res.data);
     showExpense();
@@ -24,7 +25,7 @@ async function showExpense() {
   const tablebody = document.getElementById("tablebody");
   try {
     tablebody.innerHTML = "";
-    const response = await axios.get("/getexpense");
+    const response = await axios.get("/getexpense",{ headers: { "Authorization":token} });
       console.log(response.data);
         response.data.forEach((element) => {
         tablebody.innerHTML += `<tr>
@@ -45,7 +46,7 @@ async function showExpense() {
 
 async function deleteExpense(id){
   try{
-    await axios.delete(`/deletex/${id}`)
+    await axios.delete(`/deletex/${id}`,{ headers: { "Authorization":token} })
     console.log('del success');
     showExpense()
   }

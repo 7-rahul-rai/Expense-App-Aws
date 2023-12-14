@@ -1,5 +1,11 @@
 const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken')
+const path = require('path')
+
+function generateAccessToken(id,name){
+  return jwt.sign({userId:id,userName:name},process.env.TOKEN_SECRET,{expiresIn:'2d'})
+}
 
 exports.usersnp = async (req, res) => {
   console.log("in exports poste");
@@ -39,15 +45,17 @@ exports.userlgn = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const user = await userModel.findAll({ where: { email } });
-    if (user.length > 0) {
-      bcrypt.compare(password,user[0].password,(err,result)=>{
+    const user = await userModel.findOne({ where: { email } });
+    if (user) {
+      bcrypt.compare(password,user.password,(err,result)=>{
         if(err){
           console.log(err);
         }
-        if(result===true){
+        if(result){
           console.log("logged in");
-          res.status(200).json({ message: "Logged in successfully" });
+         const token = generateAccessToken(user.id,user.name)
+         console.log(token)
+          res.status(200).json({ message: "Logged in successfully", 'token': token});
         }        
        else {
         console.log("wrong password");
@@ -65,5 +73,5 @@ exports.userlgn = async (req, res) => {
 };
 
 exports.expenset = async(req,res)=>{
-    res.sendFile('expense.html')
+  res.sendFile(path.join(__dirname,  '../public/expense.html'));
 }

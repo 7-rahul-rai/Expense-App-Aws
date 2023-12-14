@@ -1,18 +1,18 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-//const { NUMBER } = require('sequelize');
+require('dotenv').config();
 
 exports.authenticate = (req,res,next)=>{
     try{
         const token = req.header('Authorization');
-        // console.log('tokenrcvd' , token);
+        console.log(req.headers);
+        console.log(token);
         const user = jwt.verify(token ,process.env.TOKEN_SECRET );
-        const userid = user.id;
-        console.log('user id : ', userid);
+        console.log(user);
+        const userid = user.userId;
+        console.log('user', userid);
         User.findByPk(userid).then(
             user=>{
-
-                // console.log('user verified' , JSON.stringify(user));
                 req.user=user;
                 next();
             }

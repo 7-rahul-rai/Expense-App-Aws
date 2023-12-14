@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3000
 const router = require('./routes/user')
 const router1 = require('./routes/expenseroutes')
 const router2 = require('./routes/purchase')
+const router3 = require('./routes/premium')
 const User = require('./models/user')
 const Expenses = require('./models/expense')
 const Order = require('./models/order')
@@ -26,6 +27,7 @@ app.get('/',(req,res)=>{
 app.use('/',router)
 app.use('/',router1)
 app.use('/',router2)
+app.use('/',router3)
 
 User.hasMany(Expenses)
 Expenses.belongsTo(User)

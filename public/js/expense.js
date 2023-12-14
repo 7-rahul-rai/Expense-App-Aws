@@ -80,6 +80,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   console.log(decodeToken)
   const ispremiumuser = decodeToken.ispremiumuser
   if (ispremiumuser) {
+       showExpense()
       showPremiumMessage()
   }
  
@@ -92,7 +93,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
       }
   })
   console.log(response)
-  console.log('?>>>>',response.razorpay_payment_id)
+  // console.log('?>>>>',response.order.id)
   var options = {
       "key": response.data.key_id,
       "order_id": response.data.order.id,
@@ -104,6 +105,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
 
           alert('You are a premium user')
           showPremiumMessage()
+          showExpense()
           localStorage.setItem('token', res.data.token)
 
       }
@@ -122,4 +124,28 @@ document.getElementById('rzp-button1').onclick = async function (e) {
       console.log(resp)
       alert('something went wrong')
   })
+}
+
+function showLeaderboard() {
+  const inputElement = document.createElement('input')
+  inputElement.type = 'button'
+  inputElement.value = 'show leaderboard'
+  inputElement.onclick = async () => {
+      console.log('in onclcik')
+      const token = localStorage.getItem('token')
+      const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showleaderboard', {
+          headers: {
+              "Authorization": token
+          }
+      })
+      console.log('>>>', userLeaderBoardArray.data[1])
+
+      var leaderboardElem = document.getElementById('leaderboard')
+      leaderboardElem.innerHTML += '<h1> Leader Board</h1>'
+      userLeaderBoardArray.data.forEach((userDetails) => {
+
+          leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalexpenses || 0}</li>`
+      })
+  }
+  document.getElementById('message').appendChild(inputElement)
 }

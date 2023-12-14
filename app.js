@@ -4,8 +4,10 @@ const cors = require('cors')
 const PORT = process.env.PORT || 3000
 const router = require('./routes/user')
 const router1 = require('./routes/expenseroutes')
+const router2 = require('./routes/purchase')
 const User = require('./models/user')
 const Expenses = require('./models/expense')
+const Order = require('./models/order')
 const connection = require('./util/db')
 
 var app = express()
@@ -23,9 +25,13 @@ app.get('/',(req,res)=>{
 
 app.use('/',router)
 app.use('/',router1)
+app.use('/',router2)
 
 User.hasMany(Expenses)
 Expenses.belongsTo(User)
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 app.listen(PORT,()=>{
     console.log(`app is running on the port ${PORT}`);

@@ -72,15 +72,11 @@ exports.delex = async (req, res) => {
       }
     );
     const data = await expense[0].destroy();
-    if (data > 0) {
-      t.commit();
+      await t.commit();
       console.log("commit");
       console.log("Data deleted");
       res.status(200).json({ msg: "Data has been deleted" });
-    } else {
-      console.log("No data deleted");
-      res.status(404).json({ msg: "No matching data found to delete" });
-    }
+
   } catch (err) {
     await t.rollback()
     console.log('rollback');

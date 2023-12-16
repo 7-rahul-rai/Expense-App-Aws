@@ -14,7 +14,15 @@ const User = sequelize.define("user",{
         type:DataTypes.STRING,
         allowNull: false
     },
-    ispremiumuser : DataTypes.BOOLEAN
+    ispremiumuser : {
+        type : DataTypes.BOOLEAN
+    }
+    ,
+    totalexpenses : {
+        type: DataTypes.INTEGER  ,  
+        defaultValue : 0 
+    }
+
 })
     
 module.exports = User

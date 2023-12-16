@@ -177,7 +177,7 @@ function showLeaderboard() {
     userLeaderBoardArray.data.forEach((userDetails) => {
       leaderboardElem.innerHTML += `<li>Name - ${
         userDetails.name
-      } <b>Total Expense</b> - ${userDetails.totalexpenses || 0}</li>`;
+      } <b>Total Expense</b> - ${userDetails.total_cost || 0}</li>`;
     });
   };
   document.getElementById("leaderboard").appendChild(sboard);

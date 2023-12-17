@@ -8,19 +8,20 @@ exports.showleaderboard = async (req, res, next) => {
       attributes: [
         "id",
         "name",
-        [
-          sequelize.fn("sum", sequelize.col("expenses.amount")),
-          "total_cost",
-        ],
+        'totalexpenses'
+        // [
+        //   sequelize.fn("sum", sequelize.col("expenses.amount")),
+        //   "total_cost",
+        // ],
       ],
-      include: [
-        {
-          model: Expense,
-          attributes: [],
-        },
-      ],
+      // include: [
+      //   {
+      //     model: Expense,
+      //     attributes: [],
+      //   },
+      // ],
       group: ["user.id"],
-      order: [["total_cost", "DESC"]],
+      order: [["totalexpenses", "DESC"]],
     });
 
     res.status(200).json(leaderboardofusers);

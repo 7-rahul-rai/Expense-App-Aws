@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken')
 const path = require('path')
 
-function generateAccessToken(id,ispremiumuser){
-  return jwt.sign({id:id,ispremiumuser:ispremiumuser},process.env.TOKEN_SECRET)
+function generateAccessToken(id,ispremiumuser,totalexpenses){
+  return jwt.sign({id:id,ispremiumuser:ispremiumuser,totalexpenses:totalexpenses},process.env.TOKEN_SECRET)
 }
 
 exports.usersnp = async (req, res) => {
@@ -53,7 +53,7 @@ exports.userlgn = async (req, res) => {
         }
         if(result){
           console.log("logged in");
-         const token = generateAccessToken(user.id,user.ispremiumuser)
+         const token = generateAccessToken(user.id,user.ispremiumuser,user.totalexpenses)
          console.log(token)
           res.status(200).json({ message: "Logged in successfully", 'token': token});
         }        

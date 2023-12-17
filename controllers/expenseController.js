@@ -12,10 +12,10 @@ exports.expense = async (req, res) => {
       { amount, description, category, userId: req.user.id },
       { transaction: t }
     );
-    const totalExpense = Number(req.user.totalexpneses) + Number(amount);
+    const totalExpense = Number(req.user.totalexpenses) + Number(amount);
     await User.update(
-      { totalexpneses: totalExpense },
-      { where: { id: req.user.id }, transacting: t }
+      { totalexpenses: totalExpense },
+      { where: { id: req.user.id }, transaction: t }
     );
     t.commit();
     console.log("commit");
@@ -72,14 +72,27 @@ exports.delex = async (req, res) => {
       }
     );
     const data = await expense[0].destroy();
-      await t.commit();
-      console.log("commit");
-      console.log("Data deleted");
-      res.status(200).json({ msg: "Data has been deleted" });
-
+    await t.commit();
+    console.log("commit");
+    console.log("Data deleted");
+    res.status(200).json({ msg: "Data has been deleted" });
   } catch (err) {
-    await t.rollback()
-    console.log('rollback');
+    await t.rollback();
+    console.log("rollback");
     res.status(403).json({ msg: "not deleted" });
   }
 };
+
+// exports.editex = async (req, res) => {
+//   const id = req.params.id
+//   try {
+//     const data = await expenseModel.findOne({ where: {
+//       id: id,
+//       userId: req.user.id,
+//     }
+//   });
+//   res.status(200).json(data)
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };

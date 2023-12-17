@@ -19,14 +19,17 @@
                 <a class="nav-link active" href="index.html">Home </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="income.html">Add Income</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="expense.html">Add Expense</a>
+              <a class="nav-link" href="expense.html">Add Expense</a>
             </li>
             <li>
               <button class="btn btn-warning" id="rzp-button1">Buy Premium</button>
               <span id="message"></span>
+            </li>
+            <li>
+              <span></span>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-danger mr-2" href="signin.html">Logout</a>
             </li>
         </ul>
     </div>
@@ -53,7 +56,8 @@
         <option value="entertainment">Entertainment</option>
         <option value="travel">Travel</option>
         <option value="assets">Assets</option>
-        <option value="salary">Salary</option>
+        <option value="dress">Dress</option>
+        <option value="other">Other</option>
         <!-- Add more categories as needed -->
       </select>
     </div>
@@ -78,7 +82,7 @@
       <!-- Add more rows as needed -->
     </tbody>
   </table>
-  <div id="leaderboard"><button class="btn btn-success mb-3" id="sboard">Show Leaderboard</button></div>
+  <div id="leaderboard"></div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

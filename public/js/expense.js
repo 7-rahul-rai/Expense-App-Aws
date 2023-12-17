@@ -8,13 +8,13 @@ async function addExpense(e) {
 
   try {
     const token = localStorage.getItem("token");
-    // const decodeToken = parseJwt(token)
     const obj = { amount, description, category };
     const res = await axios.post("/addexpense", obj, {
       headers: { Authorization: token },
     });
     console.log("Expense added");
     console.log(res.data);
+    window.location.reload()
     showExpense();
   } catch (err) {
     console.log(err);
@@ -54,13 +54,25 @@ async function deleteExpense(id) {
     const token = localStorage.getItem("token");
     await axios.delete(`/deletex/${id}`, { headers: { Authorization: token } });
     console.log("del success");
+    window.location.reload()
     showExpense();
   } catch (err) {
     console.log(err);
   }
 }
 
-showExpense();
+// async function editExpense(id) {
+//   try {
+//     const token = localStorage.getItem("token");
+//     await axios.delete(`/editex/${id}`, { headers: { Authorization: token } });
+//     console.log("del success");
+//     showExpense();
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
+
+// showExpense();
 
 function showPremiumMessage() {
   document.getElementById("rzp-button1").remove()
@@ -132,6 +144,7 @@ document.getElementById("rzp-button1").onclick = async function (e) {
       showExpense();
       console.log(res.data.token);
       localStorage.setItem("token", res.data.token);
+      window.location.reload()
     },
   };
   const rzp1 = new Razorpay(options);
@@ -155,10 +168,11 @@ document.getElementById("rzp-button1").onclick = async function (e) {
 };
 
 function showLeaderboard() {
-   const sboard = document.getElementById('sboard')
-  // const inputElement = document.createElement("input");
-  // inputElement.type = "button";
-  // inputElement.value = "show leaderboard";
+  var sboard = document.createElement("button");
+  sboard.className = "btn btn-success mb-3";
+  sboard.id = "sboard";
+  sboard.innerHTML = "Show Leaderboard";
+
   sboard.onclick = async () => {
     console.log("in onclcik");
     const token = localStorage.getItem("token");
@@ -177,7 +191,7 @@ function showLeaderboard() {
     userLeaderBoardArray.data.forEach((userDetails) => {
       leaderboardElem.innerHTML += `<li>Name - ${
         userDetails.name
-      } <b>Total Expense</b> - ${userDetails.total_cost || 0}</li>`;
+      } <b>Total Expense</b> - ${userDetails.totalexpenses || 0}</li>`;
     });
   };
   document.getElementById("leaderboard").appendChild(sboard);

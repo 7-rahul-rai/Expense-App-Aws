@@ -32,6 +32,7 @@ exports.purchasepremium = async (req, res, next) => {
     try {
       const { payment_id, order_id } = req.body;
       const id = req.user.id;
+      const totalexpenses = req.user.totalexpenses
       const order = await Order.findOne({ where: { orderid: order_id } });
   
       await Promise.all([
@@ -39,7 +40,7 @@ exports.purchasepremium = async (req, res, next) => {
         req.user.update({ ispremiumuser: true }),
       ]);
   
-      const token = await jwt.sign({ id: id, ispremiumuser: true }, process.env.TOKEN_SECRET);
+      const token = await jwt.sign({ id: id, ispremiumuser: true, totalexpenses:totalexpenses}, process.env.TOKEN_SECRET);
   
       res.status(202).json({
         success: true,

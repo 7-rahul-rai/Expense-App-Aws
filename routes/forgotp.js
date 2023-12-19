@@ -1,7 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const forgotController = require('../controllers/forgotController')
+const express = require('express');
+const forgotcontroller = require('../controllers/forgotController');
 
-router.post('/password/forgotpassword',forgotController.forgotp)
+const router = express.Router();
 
-module.exports = router
+// router.get('/forgotpassword',forgotcontroller.forgot);
+
+router.post('/password/forgotpassword',forgotcontroller.forgotpassword)
+
+router.get('/password/resetpassword/:uuid',forgotcontroller.resetpassword)
+
+router.post('/password/update' , forgotcontroller.updatepassword)
+
+
+
+
+module.exports = router ;

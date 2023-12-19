@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-
+const ForGotPassword =require('../models/forgotpassword');
 const User = require('../models/user'); 
 const bcrypt =  require('bcrypt');
 
@@ -10,29 +10,75 @@ const apiKey = client.authentications['api-key']
 apiKey.apiKey = process.env.API_KEY
 const tranEmailApi = new Sib.TransactionalEmailsApi()
 const sender = {
-    email : 'rk03wap@gmail.com'
+    email : 'rk03wap@gmail.com' ,
+    name : 'expense-aws'
 }
 
+const path = require('path');
 
-exports.forgotp = async(req,res)=>{
-    const {email} = req.body;
-    const receiver = {
-        email : email
-    }
+
+exports.forgot = (req,res,next)=>{
+    res.sendFile(path.join(__dirname,  '../FrontEnd/forgotpassword.html'));
+}
+
+exports.forgotpassword = async (req,res,next)=>{
     try{
-    await tranEmailApi.sendTransacEmail({
-        sender , 
-        to : receiver , 
-        subject : 'link reset password' , 
-        textContent : `This to inform you` 
-    })
-                                                       
-    res.status(200).json({msg : 'email sent reset password'});
+        const email =  req.body.email;
+        const users = await User.findAll({where: {email:email}});
+        if(users[0]){
+            const uuid = uuidv4();
+            await ForGotPassword.create({ uuid : uuid , userId : users[0].id })
+            const recievers = [{email:email}]
+            await tranEmailApi.sendTransacEmail({sender , to : recievers , subject : 'link to reset password' , 
+                                            textContent : `http://localhost:3000/password/resetpassword/{{params.uuid}}` ,
+                                            params :{uuid : uuid} })
+            const link = `http://localhost:3000/password/resetpassword/${uuid}` ;
+            res.status(200).json({msg : 'email sent to reset password' , link : link  });
+
+        }else{
+            res.status(400).json({msg : 'enter valid email id'});
+        }
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({error : err});
+    }
+
+
 }
-catch(err){
-    console.log("error in sending mail", err);
-    res.json(err)
+
+exports.resetpassword = async(req,res,next)=>{
+    try{
+    const uuid = req.params.uuid ;
+    const  forgotpasswords = await ForGotPassword.findAll({where :{ uuid : uuid , isActive : true}});
+    if(forgotpasswords[0]){
+        forgotpasswords[0].update({isActive:false})
+        res.sendFile(path.join(__dirname,  '../public/updatep.html'));
+    }else{
+        res.status(400).json({message : 'invalid request'})
+    }
+    }catch(err){
+    console.log(err);
+    res.status(500).json({error : err});
+    }
 }
-    
+
+exports.updatepassword = async(req,res,next)=>{
+    try{
+        const {email , password } = req.body ;
+        const users = await User.findAll({where: {email:email}});
+        if(users[0]){
+            bcrypt.hash(password , 10 , async ( err , hash)=>{
+                await users[0].update({password: hash});
+                console.log('sending update')
+                res.status(201).json({message : 'password changed  successfully'})
+            })
+        }else{
+            res.status(400).json({message : 'no such user exists'})
+        }
+    }catch(err){
+    console.log(err);
+    res.status(500).json({error : err});
+    }
 }
 

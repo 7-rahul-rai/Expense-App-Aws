@@ -10,6 +10,7 @@ const router4 = require('./routes/forgotp')
 const User = require('./models/user')
 const Expenses = require('./models/expense')
 const Order = require('./models/order')
+const forgotPassword = require('./models/forgotpassword')
 const connection = require('./util/db')
 
 var app = express()
@@ -36,6 +37,9 @@ Expenses.belongsTo(User)
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(forgotPassword);
+forgotPassword.belongsTo(User);
 
 app.listen(PORT,()=>{
     console.log(`app is running on the port ${PORT}`);

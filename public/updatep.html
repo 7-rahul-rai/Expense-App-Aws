@@ -46,7 +46,7 @@
                   <input
                     type="email"
                     class="form-control"
-                    id="email"
+                    id="emai"
                     placeholder="Enter email"
                     required
                     name="email"
@@ -57,7 +57,7 @@
                     <input
                       type="password"
                       class="form-control"
-                      id="password"
+                      id="pwd"
                       placeholder="Password"
                       required
                       name="password"
@@ -75,6 +75,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/resetp.js"></script>
+    <script>
+      document.getElementById('resetp').addEventListener('submit',async function(e) {
+        e.preventDefault();
+    
+        var password = document.getElementById('pwd').value;
+        var email = document.getElementById('emai').value;
+    
+        await axios.post('http://localhost:3000/password/update', {
+            password: password , email : email
+        })
+        .then(function (response) {
+            console.log('res>>',response);
+            window.location.href='/login'
+          })
+        .catch(function (error) {
+            console.log(error);
+        });
+    });
+    </script>
   </body>
 </html>

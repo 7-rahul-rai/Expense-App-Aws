@@ -50,9 +50,11 @@ exports.forgotpassword = async (req,res,next)=>{
 exports.resetpassword = async(req,res,next)=>{
     try{
     const uuid = req.params.uuid ;
-    const  forgotpasswords = await ForGotPassword.findAll({where :{ uuid : uuid , isActive : true}});
-    if(forgotpasswords[0]){
-        forgotpasswords[0].update({isActive:false})
+    const  forgotpassword = await ForGotPassword.findOne({where :{ uuid : uuid , isActive : true}});
+    console.log('details is ',forgotpassword);
+    if(forgotpassword){
+        console.log("in reset fn");
+        forgotpassword.update({isActive:false})
         res.sendFile(path.join(__dirname,  '../public/updatep.html'));
     }else{
         res.status(400).json({message : 'invalid request'})
@@ -80,5 +82,9 @@ exports.updatepassword = async(req,res,next)=>{
     console.log(err);
     res.status(500).json({error : err});
     }
+}
+
+exports.login = (req,res)=>{
+    res.sendFile(path.join(__dirname,  '../public/signin.html'))
 }
 

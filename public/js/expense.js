@@ -108,6 +108,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.log(ispremiumuser);
     showPremiumMessage();
     showLeaderboard();
+    download()
   }
   const dbdata = await axios.get("/getexpense", {
     headers: {
@@ -196,3 +197,35 @@ function showLeaderboard() {
   };
   document.getElementById("leaderboard").appendChild(sboard);
 }
+
+function download() {
+      const report1 = document.getElementById('report1')
+      const butt3 = document.createElement('button');
+      const butt4 = document.createElement('button');
+
+      
+      butt3.id = 'down_report';
+      butt3.innerHTML = 'Generate And Download Report';
+      butt3.className = "buypre-btn2"
+
+      butt4.id = 'pastrep';
+      butt4.innerHTML = 'Download Past Generated Report';
+      butt4.className = "buypre-btn2"
+     
+      
+      report1.appendChild(butt3);
+      report1.appendChild(butt4);
+      document.getElementById('down_report').addEventListener('click', downloadrep);
+      document.getElementById('pastrep').addEventListener('click', pastreports);
+    }
+
+    async function downloadrep() {
+      window.location.href = "./reports.html"
+  
+    }
+    async function pastreports() {
+      window.location.href = "./pastreports.html"
+  
+    }
+
+  

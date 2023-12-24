@@ -5,5 +5,7 @@ const premiumController = require('../controllers/premium');
 const router = express.Router();
 
 router.get('/premium/showleaderboard', authmiddleware.authenticate ,premiumController.showleaderboard);
-
+// router.get('/user/download', authmiddleware.authenticate , authmiddleware.checkpremium ,premiumController.download);
+router.get('/premium/downrep',authmiddleware.authenticate,premiumController.downloadrep);
+router.get('/premium/downgenerep',authmiddleware.authenticate,premiumController.downgenerep);
 module.exports = router ;

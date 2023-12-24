@@ -206,11 +206,11 @@ function download() {
       
       butt3.id = 'down_report';
       butt3.innerHTML = 'Generate And Download Report';
-      butt3.className = "buypre-btn2"
+      butt3.className = "buypre-btn2,btn btn-primary"
 
       butt4.id = 'pastrep';
       butt4.innerHTML = 'Download Past Generated Report';
-      butt4.className = "buypre-btn2"
+      butt4.className = "buypre-btn2,btn btn-warning"
      
       
       report1.appendChild(butt3);

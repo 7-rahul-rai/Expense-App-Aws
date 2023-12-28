@@ -87,7 +87,6 @@ function pbutton(pages){
       const pagination1 = document.querySelector('.pagination');
       const but = document.createElement('button')
       but.innerHTML = i;
-      but.className = "pagibutt"
       but.value = i
       pagination1.appendChild(but)
       but.addEventListener('click', pagei);
@@ -98,7 +97,14 @@ async function pagei(e) {
   const pagination1 = document.querySelector('.pagination');
   const token = localStorage.getItem("token");
 
+ pagination1.querySelectorAll('button').forEach(button => {
+    button.style.color = '';
+    button.style.backgroundColor ='';
+  });
+
   page = e.target.value
+  e.target.style.color = 'white';
+  e.target.style.backgroundColor = 'blue';
   console.log(page);
   const response = await axios.get("/getexpense/"+page, {
     headers: { Authorization: token },

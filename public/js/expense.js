@@ -1,5 +1,5 @@
 document.getElementById("expense").addEventListener("submit", addExpense);
-var page = 1
+var page = 1;
 
 async function addExpense(e) {
   e.preventDefault();
@@ -15,7 +15,7 @@ async function addExpense(e) {
     });
     console.log("Expense added");
     console.log(res.data);
-    window.location.reload()
+    window.location.reload();
     showExpense();
   } catch (err) {
     console.log(err);
@@ -23,7 +23,6 @@ async function addExpense(e) {
   }
   document.getElementById("expense").reset();
 }
-
 
 function displayExpenses(expenses) {
   const tablebody = document.getElementById("tablebody");
@@ -42,17 +41,17 @@ function displayExpenses(expenses) {
 }
 
 async function showExpense() {
-  const limit = 10
+  const limit = 10;
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("/getexpense/"+page, {
+    const response = await axios.get("/getexpense/" + page, {
       headers: { Authorization: token },
     });
     console.log(response);
-    const nofdata = response.data.totalItems
-    const tpages = Math.ceil(nofdata/limit)
+    const nofdata = response.data.totalItems;
+    const tpages = Math.ceil(nofdata / limit);
 
-    pbutton(tpages)
+    pbutton(tpages);
     console.log(tpages);
     displayExpenses(response.data.expenses);
   } catch (err) {
@@ -60,59 +59,55 @@ async function showExpense() {
   }
 }
 
-
 async function deleteExpense(id) {
   try {
     const token = localStorage.getItem("token");
     await axios.delete(`/deletex/${id}`, { headers: { Authorization: token } });
     console.log("del success");
-    window.location.reload()
+    window.location.reload();
     showExpense();
   } catch (err) {
     console.log(err);
   }
 }
 
-
 function showPremiumMessage() {
-  document.getElementById("rzp-button1").remove()
+  document.getElementById("rzp-button1").remove();
   document.getElementById(
     "message"
   ).innerHTML = `<span class="btn btn-light" id="message" style="color: rgb(216, 22, 8);">You are a Premium User</span>`;
 }
 
-function pbutton(pages){
-    for (var i = 1; i <= pages; i++) {
-      const pagination1 = document.querySelector('.pagination');
-      const but = document.createElement('button')
-      but.innerHTML = i;
-      but.value = i
-      pagination1.appendChild(but)
-      but.addEventListener('click', pagei);
+function pbutton(pages) {
+  for (var i = 1; i <= pages; i++) {
+    const pagination1 = document.querySelector(".pagination");
+    const but = document.createElement("button");
+    but.innerHTML = i;
+    but.value = i;
+    pagination1.appendChild(but);
+    but.addEventListener("click", pagei);
   }
 }
 
 async function pagei(e) {
-  const pagination1 = document.querySelector('.pagination');
+  const pagination1 = document.querySelector(".pagination");
   const token = localStorage.getItem("token");
 
- pagination1.querySelectorAll('button').forEach(button => {
-    button.style.color = '';
-    button.style.backgroundColor ='';
+  pagination1.querySelectorAll("button").forEach((button) => {
+    button.style.color = "";
+    button.style.backgroundColor = "";
   });
 
-  page = e.target.value
-  e.target.style.color = 'white';
-  e.target.style.backgroundColor = 'blue';
+  page = e.target.value;
+  e.target.style.color = "white";
+  e.target.style.backgroundColor = "#007bff";
   console.log(page);
-  const response = await axios.get("/getexpense/"+page, {
+  const response = await axios.get("/getexpense/" + page, {
     headers: { Authorization: token },
   });
   console.log(response);
   displayExpenses(response.data.expenses);
-
 }
-
 
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
@@ -141,9 +136,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.log(ispremiumuser);
     showPremiumMessage();
     showLeaderboard();
-    download()
+    download();
   }
-  const dbdata = await axios.get("/getexpense/"+page, {
+  const dbdata = await axios.get("/getexpense/" + page, {
     headers: {
       Authorization: token,
     },
@@ -178,7 +173,7 @@ document.getElementById("rzp-button1").onclick = async function (e) {
       showExpense();
       console.log(res.data.token);
       localStorage.setItem("token", res.data.token);
-      window.location.reload()
+      window.location.reload();
     },
   };
   const rzp1 = new Razorpay(options);
@@ -232,33 +227,27 @@ function showLeaderboard() {
 }
 
 function download() {
-      const report1 = document.getElementById('report1')
-      const butt3 = document.createElement('button');
-      const butt4 = document.createElement('button');
+  const report1 = document.getElementById("report1");
+  const butt3 = document.createElement("button");
+  const butt4 = document.createElement("button");
 
-      
-      butt3.id = 'down_report';
-      butt3.innerHTML = 'Generate And Download Report';
-      butt3.className = "buypre-btn2,btn btn-primary"
+  butt3.id = "down_report";
+  butt3.innerHTML = "Generate And Download Report";
+  butt3.className = "buypre-btn2,btn btn-primary";
 
-      butt4.id = 'pastrep';
-      butt4.innerHTML = 'Download Past Generated Report';
-      butt4.className = "buypre-btn2,btn btn-warning"
-     
-      
-      report1.appendChild(butt3);
-      report1.appendChild(butt4);
-      document.getElementById('down_report').addEventListener('click', downloadrep);
-      document.getElementById('pastrep').addEventListener('click', pastreports);
-    }
+  butt4.id = "pastrep";
+  butt4.innerHTML = "Download Past Generated Report";
+  butt4.className = "buypre-btn2,btn btn-warning";
 
-    async function downloadrep() {
-      window.location.href = "./reports.html"
-  
-    }
-    async function pastreports() {
-      window.location.href = "./pastreports.html"
-  
-    }
+  report1.appendChild(butt3);
+  report1.appendChild(butt4);
+  document.getElementById("down_report").addEventListener("click", downloadrep);
+  document.getElementById("pastrep").addEventListener("click", pastreports);
+}
 
-  
+async function downloadrep() {
+  window.location.href = "./reports.html";
+}
+async function pastreports() {
+  window.location.href = "./pastreports.html";
+}

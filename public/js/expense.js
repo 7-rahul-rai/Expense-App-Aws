@@ -1,5 +1,13 @@
 document.getElementById("expense").addEventListener("submit", addExpense);
 var page = 1;
+var limit = 10
+
+document.getElementById('nrows').addEventListener('change', function() {
+  const selectedRows = this.value;
+
+  localStorage.setItem('limit', selectedRows); 
+});
+
 
 async function addExpense(e) {
   e.preventDefault();
@@ -41,7 +49,6 @@ function displayExpenses(expenses) {
 }
 
 async function showExpense() {
-  const limit = 10;
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get("/getexpense/" + page, {

@@ -30,21 +30,28 @@ exports.expense = async (req, res) => {
 
 exports.getexpense = async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit) || 10;
-    const currentPage = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const currentPage = req.params.page || 1;
     const offset = (currentPage - 1) * limit;
 
+    // const data1 = await expenseModel.countAll()
+    const data1 = await expenseModel.count({where: { userId: req.user.id }})
     const data = await expenseModel.findAll({
       where: { userId: req.user.id },
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "ASC"]],
       offset,
       limit,
     });
-    const totalItems = data.count;
-    const totalPages = Math.ceil(totalItems / limit);
+    // const totalItems = data.count;
+    // const totalPages = Math.ceil(totalItems / limit);
     const jsonData = data.map((expense) => expense.toJSON());
     // console.log(jsonData);
-    res.json(jsonData);
+    console.log(data1);
+    const responseData = {
+      totalItems: data1,
+      expenses: jsonData,
+    };
+    res.json(responseData);
   } catch (err) {
     res.status(500).json({ msg: "error" });
   }

@@ -4,8 +4,6 @@ const GENERATEDREPORTS = require("../models/generatedreports");
 const sequelize = require("../util/db");
 
 const AWS =require('aws-sdk');
-// const UserServices = require('../services/userservices')
-// const S3services = require('../services/s3services')
 
 exports.showleaderboard = async (req, res, next) => {
   try {
@@ -14,17 +12,7 @@ exports.showleaderboard = async (req, res, next) => {
         "id",
         "name",
         'totalexpenses'
-        // [
-        //   sequelize.fn("sum", sequelize.col("expenses.amount")),
-        //   "total_cost",
-        // ],
       ],
-      // include: [
-      //   {
-      //     model: Expense,
-      //     attributes: [],
-      //   },
-      // ],
       group: ["user.id"],
       order: [["totalexpenses", "DESC"]],
     });
@@ -56,6 +44,7 @@ exports.downloadrep = async(req, res) => {
     res.status(500).json({ message: "Something went wrong " });
   }
 }
+
 async function uploadToS3(data, filename) {
   try {
     const BUCKET_NAME = process.env.BUCKET_NAME;
@@ -77,6 +66,7 @@ async function uploadToS3(data, filename) {
     return err
   }
 }
+
 exports.downgenerep = async(req, res) => {
   try {
     const search = await GENERATEDREPORTS.findAll(

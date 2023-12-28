@@ -1,4 +1,5 @@
 document.getElementById("expense").addEventListener("submit", addExpense);
+var page = 1
 
 async function addExpense(e) {
   e.preventDefault();
@@ -23,31 +24,43 @@ async function addExpense(e) {
   document.getElementById("expense").reset();
 }
 
-async function showExpense() {
-  const token = localStorage.getItem("token");
+
+function displayExpenses(expenses) {
   const tablebody = document.getElementById("tablebody");
+  tablebody.innerHTML = "";
+
+  expenses.forEach((element) => {
+    tablebody.innerHTML += `<tr>
+      <td>${element.amount}</td>
+      <td>${element.description}</td>
+      <td>${element.category}</td>
+      <td>
+        <button type="button" class="btn btn-warning btn-sm" onclick="editExpense(${element.id})">Edit</button>
+        <button type="button" class="btn btn-danger btn-sm ml-2" onclick="deleteExpense(${element.id})">Delete</button>
+      </td>
+    </tr>`;
+  });
+}
+
+async function showExpense() {
+  const limit = 10
+  const token = localStorage.getItem("token");
   try {
-    tablebody.innerHTML = "";
-    const response = await axios.get("/getexpense", {
+    const response = await axios.get("/getexpense/"+page, {
       headers: { Authorization: token },
     });
-    console.log(response.data);
-    response.data.forEach((element) => {
-      tablebody.innerHTML += `<tr>
-     <td>${element.amount}</td>
-     <td>${element.description}</td>
-     <td>${element.category}</td>
-     <td>
-       <button type="button" class="btn btn-warning btn-sm" onclick="editExpense(${element.id})">Edit</button>
-       <button type="button" class="btn btn-danger btn-sm ml-2" onclick="deleteExpense(${element.id})">Delete</button>
+    console.log(response);
+    const nofdata = response.data.totalItems
+    const tpages = Math.ceil(nofdata/limit)
 
-     </td>
-   </tr>`;
-    });
+    pbutton(tpages)
+    console.log(tpages);
+    displayExpenses(response.data.expenses);
   } catch (err) {
     console.log(err);
   }
 }
+
 
 async function deleteExpense(id) {
   try {
@@ -61,18 +74,6 @@ async function deleteExpense(id) {
   }
 }
 
-// async function editExpense(id) {
-//   try {
-//     const token = localStorage.getItem("token");
-//     await axios.delete(`/editex/${id}`, { headers: { Authorization: token } });
-//     console.log("del success");
-//     showExpense();
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
-
-// showExpense();
 
 function showPremiumMessage() {
   document.getElementById("rzp-button1").remove()
@@ -80,6 +81,33 @@ function showPremiumMessage() {
     "message"
   ).innerHTML = `<span class="btn btn-light" id="message" style="color: rgb(216, 22, 8);">You are a Premium User</span>`;
 }
+
+function pbutton(pages){
+    for (var i = 1; i <= pages; i++) {
+      const pagination1 = document.querySelector('.pagination');
+      const but = document.createElement('button')
+      but.innerHTML = i;
+      but.className = "pagibutt"
+      but.value = i
+      pagination1.appendChild(but)
+      but.addEventListener('click', pagei);
+  }
+}
+
+async function pagei(e) {
+  const pagination1 = document.querySelector('.pagination');
+  const token = localStorage.getItem("token");
+
+  page = e.target.value
+  console.log(page);
+  const response = await axios.get("/getexpense/"+page, {
+    headers: { Authorization: token },
+  });
+  console.log(response);
+  displayExpenses(response.data.expenses);
+
+}
+
 
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
@@ -110,7 +138,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     showLeaderboard();
     download()
   }
-  const dbdata = await axios.get("/getexpense", {
+  const dbdata = await axios.get("/getexpense/"+page, {
     headers: {
       Authorization: token,
     },

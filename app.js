@@ -2,6 +2,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const PORT = process.env.PORT || 3000
+const helmet = require('helmet')
+const path = require('path')
+const fs = require('fs')
+const morgan = require('morgan')
 const router = require('./routes/user')
 const router1 = require('./routes/expenseroutes')
 const router2 = require('./routes/purchase')
@@ -14,6 +18,11 @@ const forgotPassword = require('./models/forgotpassword')
 const generatedreports = require('./models/generatedreports')
 const connection = require('./util/db')
 
+const accessLogStream = fs.createWriteStream(
+    path.join(__dirname,'access.log'),
+    {flags:'a'}
+)
+
 var app = express()
 
 app.use(bodyParser.json())
@@ -21,7 +30,8 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors())
 app.use(express.static('public'))
 app.use(cors())
-
+app.use(helmet())
+app.use(morgan('combined',{stream:accessLogStream}))
 
 app.get('/',(req,res)=>{
     res.sendFile('index.html')

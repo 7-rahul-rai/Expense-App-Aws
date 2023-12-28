@@ -30,8 +30,8 @@ exports.expense = async (req, res) => {
 
 exports.getexpense = async (req, res) => {
   try {
-    const limit = 10;
     const currentPage = req.params.page || 1;
+    const limit = Number(req.params.limit) || 5;
     const offset = (currentPage - 1) * limit;
 
     // const data1 = await expenseModel.countAll()

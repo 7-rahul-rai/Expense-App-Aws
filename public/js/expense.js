@@ -1,13 +1,18 @@
 document.getElementById("expense").addEventListener("submit", addExpense);
 var page = 1;
-var limit = 10
+document.getElementById('nrows').value = localStorage.getItem('limit')
+
+if(localStorage.getItem('limit')==null){
+localStorage.setItem('limit',5)
+}
 
 document.getElementById('nrows').addEventListener('change', function() {
   const selectedRows = this.value;
 
-  localStorage.setItem('limit', selectedRows); 
+  localStorage.setItem('limit', selectedRows); // Update the limit variable
+  window.location.reload()
+ 
 });
-
 
 async function addExpense(e) {
   e.preventDefault();
@@ -49,9 +54,10 @@ function displayExpenses(expenses) {
 }
 
 async function showExpense() {
+  const limit = localStorage.getItem('limit')
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("/getexpense/" + page, {
+    const response = await axios.get("/getexpense/" + page + '/' + limit, {
       headers: { Authorization: token },
     });
     console.log(response);
@@ -99,6 +105,7 @@ function pbutton(pages) {
 async function pagei(e) {
   const pagination1 = document.querySelector(".pagination");
   const token = localStorage.getItem("token");
+  const limit = localStorage.getItem('limit')
 
   pagination1.querySelectorAll("button").forEach((button) => {
     button.style.color = "";
@@ -109,7 +116,7 @@ async function pagei(e) {
   e.target.style.color = "white";
   e.target.style.backgroundColor = "#007bff";
   console.log(page);
-  const response = await axios.get("/getexpense/" + page, {
+  const response = await axios.get("/getexpense/" + page+ '/' + limit, {
     headers: { Authorization: token },
   });
   console.log(response);
@@ -134,6 +141,7 @@ function parseJwt(token) {
 
 window.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("token");
+  const limit = localStorage.getItem('limit')
   console.log("in window load");
 
   const decodeToken = parseJwt(token);
@@ -145,7 +153,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     showLeaderboard();
     download();
   }
-  const dbdata = await axios.get("/getexpense/" + page, {
+  const dbdata = await axios.get("/getexpense/" + page+ '/' + limit, {
     headers: {
       Authorization: token,
     },

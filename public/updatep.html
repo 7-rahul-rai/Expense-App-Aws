@@ -82,7 +82,7 @@
         var password = document.getElementById('pwd').value;
         var email = document.getElementById('emai').value;
     
-        await axios.post('http://localhost:3000/password/update', {
+        await axios.post('http://16.16.87.135:3300:3000/password/update', {
             password: password , email : email
         })
         .then(function (response) {

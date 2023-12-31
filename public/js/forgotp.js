@@ -5,7 +5,7 @@ async function forgotp(e) {
   var email = document.getElementById('email').value
   try {
     const res = await axios.post(
-      "http://localhost:3000/password/forgotpassword/",
+      "http://16.16.87.135:3300:3000/password/forgotpassword/",
       {
         email: email,
       }

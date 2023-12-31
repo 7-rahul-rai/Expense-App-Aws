@@ -162,7 +162,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 document.getElementById("rzp-button1").onclick = async function (e) {
   const token = localStorage.getItem("token");
-  const response = await axios.get("http://localhost:3000/purchase/premium", {
+  const response = await axios.get("http://16.16.87.135:3300:3000/purchase/premium", {
     headers: {
       Authorization: token,
     },
@@ -174,7 +174,7 @@ document.getElementById("rzp-button1").onclick = async function (e) {
     order_id: response.data.order.id,
     handler: async function (response) {
       const res = await axios.post(
-        "http://localhost:3000/purchase/updatetransactionstatus",
+        "http://16.16.87.135:3300:3000/purchase/updatetransactionstatus",
         {
           order_id: options.order_id,
           payment_id: response.razorpay_payment_id,
@@ -198,7 +198,7 @@ document.getElementById("rzp-button1").onclick = async function (e) {
     console.log(response);
 
     const resp = await axios.post(
-      "http://localhost:3000/purchase/updatetransactionfail",
+      "http://16.16.87.135:3300:3000/purchase/updatetransactionfail",
       {
         order_id: options.order_id,
       },
@@ -220,7 +220,7 @@ function showLeaderboard() {
     console.log("in onclcik");
     const token = localStorage.getItem("token");
     const userLeaderBoardArray = await axios.get(
-      "http://localhost:3000/premium/showleaderboard",
+      "http://16.16.87.135:3300:3000/premium/showleaderboard",
       {
         headers: {
           Authorization: token,

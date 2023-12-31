@@ -32,10 +32,10 @@ exports.forgotpassword = async (req, res, next) => {
         sender,
         to: recievers,
         subject: "link to reset password",
-        textContent: `http://localhost:3000/password/resetpassword/{{params.uuid}}`,
+        textContent: `http://16.16.87.135:3300:3000/password/resetpassword/{{params.uuid}}`,
         params: { uuid: uuid },
       });
-      const link = `http://localhost:3000/password/resetpassword/${uuid}`;
+      const link = `http://16.16.87.135:3300:3000/password/resetpassword/${uuid}`;
       res.status(200).json({ msg: "email sent to reset password", link: link });
     } else {
       res.status(400).json({ msg: "enter valid email id" });

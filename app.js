@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const PORT = process.env.PORT || 3000
+const PORT = 3300 || 3000
 const helmet = require('helmet')
 const path = require('path')
 const fs = require('fs')

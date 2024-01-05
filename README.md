@@ -67,7 +67,7 @@
 <h2>Getting Started</h2>
 
 <ol>
-  <li>Clone the repository: <code>git clone https://github.com/your-username/expense-tracker.git</code></li>
+  <li>Clone the repository: <code>git clone https://github.com/7-rahul-rai/Expense-App-Aws.git</code></li>
   <li>Install dependencies: <code>npm install</code></li>
   <li>Set up your database and configure Sequelize accordingly.</li>
   <li>Run the application: <code>npm start</code></li>

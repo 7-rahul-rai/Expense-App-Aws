@@ -79,10 +79,6 @@
 
 <p>Contributions are welcome! Feel free to open issues or submit pull requests to enhance the functionality or fix bugs.</p>
 
-<h2>License</h2>
-
-<p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
-
 <p>Happy Expense Tracking!</p>
 
 </body>
